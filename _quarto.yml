@@ -4,6 +4,7 @@ project:
   render:
     - index.qmd
     - fixtures.qmd
+    - submit.qmd
     - posts/
 
 website:
@@ -20,7 +21,7 @@ website:
       - href: "#about"
         text: About
     right:
-      - href: "#submit"
+      - href: submit.qmd
         text: "Send us a question"
   page-footer:
     center: |

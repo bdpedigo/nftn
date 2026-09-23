@@ -1,0 +1,7 @@
+# Site-wide configuration values, referenced in pages with {{< var key >}}.
+
+# The Google Form that readers use to submit a question or a find.
+# PLACEHOLDER: replace with the real form URL once Ben creates the form.
+# Use the plain "viewform" URL (no query string); the submit page adds
+# "?embedded=true" for the iframe and uses this URL as-is for the fallback link.
+form_url: "https://docs.google.com/forms/d/e/1FAIpQLScMH8tKDiNLMH9l2LEn5iEhcgZbIXy5gvJ7aEgyiJktZYlG9g/viewform?usp=dialog"

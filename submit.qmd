@@ -1,0 +1,12 @@
+---
+title: "Send us a question"
+subtitle: "Found something strange in Neuroglancer? Send us the link and your question. A scientist who works in that data will write back."
+---
+
+```{=html}
+<div class="form-embed">
+<iframe src="{{< var form_url >}}?embedded=true" title="Submission form for questions and finds" loading="lazy">Loading the form…</iframe>
+</div>
+```
+
+Trouble seeing the form? [Open it in a new tab]({{< var form_url >}}){target="_blank" rel="noopener"}.
