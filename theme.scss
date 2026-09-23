@@ -1,0 +1,469 @@
+/*-- scss:defaults --*/
+
+// =============================================================================
+// Notes from the Neuropil — project theme (Direction F, "Cover")
+// Derived from design/mockup-f-cover and design/theme-direction.md (TASK-9).
+// Light only. Neuroglancer-derived indigo ground with white "prints".
+//
+// STABLE CLASS NAMES (do not rename; later tasks emit markup that matches):
+//   Home listing card (custom EJS template listings/find-card.ejs.md):
+//     .grid  .print  .print .q  .print .asker  .who  .who .av  .who .tag
+//   Post question-first header (_partials/title-block.html):
+//     .post-head  .meta  .meta .tag  .ask  .ask-who  .ask-who .av  .ask-text
+//   Author block           -> TASK-4: .author-card .av .name .role .links
+//   Reference list         -> TASK-5: .refs  .refs ol  .cite (inline citation)
+//   Neuroglancer badge     -> TASK-6: .ng-badge
+//   Generated ngsnap figure-> TASK-7: .sheet figure  .sheet figcaption
+//   Speculation callout:     .spec  .spec .lbl  (mark)
+//   Tag color hook:          [data-tag="..."] sets --tag
+// =============================================================================
+
+// ---- Fonts (loaded in <head> via include-head.html) -------------------------
+$font-family-sans-serif: "Atkinson Hyperlegible", system-ui, -apple-system, sans-serif !default;
+$font-family-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace !default;
+$headings-font-family: "Gabarito", system-ui, sans-serif !default;
+$font-size-root: 17px !default;
+$line-height-base: 1.6 !default;
+
+// ---- Palette (Direction F tokens) -------------------------------------------
+$nftn-cover: #e4e7f7;        // page ground (indigo #5c6bc0 lightened)
+$nftn-accent: #5c6bc0;       // buttons, badge, author card, avatars
+$nftn-accent-deep: #3f4d9e;  // hover, small labels
+$nftn-paper: #ffffff;        // prints and the post sheet
+$nftn-ink: #1a1a1a;          // text
+$nftn-ink-soft: #4a4f6e;     // secondary text on the ground
+$nftn-link: #0033cc;         // links
+$nftn-mark: #ffff66;         // speculation highlight
+
+// ---- Bootstrap variable overrides (kill stock Quarto/Bootstrap look) --------
+$body-bg: $nftn-cover !default;
+$body-color: $nftn-ink !default;
+$primary: $nftn-accent !default;
+$link-color: $nftn-link !default;
+$link-decoration: underline !default;
+$border-color: $nftn-ink !default;
+
+// Navbar (Quarto uses navbar-dark; we recolor it to the ground, dark text)
+$navbar-bg: $nftn-cover !default;
+$navbar-fg: $nftn-ink !default;
+
+// Code
+$code-color: $nftn-accent-deep !default;
+$code-bg: #f2f3fb !default;
+
+/*-- scss:rules --*/
+
+:root {
+  --cover: #{$nftn-cover};
+  --accent: #{$nftn-accent};
+  --accent-deep: #{$nftn-accent-deep};
+  --paper: #{$nftn-paper};
+  --ink: #{$nftn-ink};
+  --ink-soft: #{$nftn-ink-soft};
+  --link: #{$nftn-link};
+  --mark: #{$nftn-mark};
+  --tag-glia: #ab47bc;
+  --tag-synapse: #26a69a;
+  --tag-artifact: #ffca28;
+  --tag-mito: #66bb6a;
+  --tag-vessel: #5c6bc0;
+  --display: "Gabarito", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --gutter: clamp(20px, 4vw, 56px);
+}
+
+// Tag color hook. Cards and post meta set data-tag; this resolves --tag.
+[data-tag="Glia"] { --tag: var(--tag-glia); }
+[data-tag="Synapse"] { --tag: var(--tag-synapse); }
+[data-tag="Mitochondria"] { --tag: var(--tag-mito); }
+[data-tag="Artifact"] { --tag: var(--tag-artifact); }
+[data-tag="Blood vessel"], [data-tag="Vessel"] { --tag: var(--tag-vessel); }
+
+body {
+  font-family: var(--body);
+  color: var(--ink);
+  background: var(--cover);
+  line-height: 1.6;
+}
+::selection { background: var(--accent); color: #fff; }
+a { color: var(--link); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+img { max-width: 100%; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--display); letter-spacing: -0.02em; }
+
+// Full-bleed layout: drop Quarto's centered narrow grid, use our own gutters.
+#quarto-content.page-columns {
+  display: block;
+  max-width: none;
+  padding: 0;
+}
+#quarto-content > * { grid-column: unset; }
+.page-columns .content { grid-column: unset; }
+
+// ---------------------------------------------------------------------------
+// Navbar  (Quarto: .navbar .navbar-brand .navbar-nav .nav-link)
+// ---------------------------------------------------------------------------
+// Disable Quarto's headroom hide/show (the bounce on scroll); keep the bar
+// in normal document flow so it scrolls away with the page, as in the mockup.
+#quarto-header, #quarto-header.headroom, #quarto-header.fixed-top {
+  position: relative !important;
+  transform: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
+body { padding-top: 0 !important; }
+
+.navbar {
+  background: var(--cover) !important;
+  padding: 20px var(--gutter);
+  border: 0;
+  box-shadow: none;
+}
+.navbar .navbar-container { max-width: none; padding: 0; }
+.navbar-brand-container .navbar-title,
+.navbar .navbar-brand {
+  font: 800 20px/1 var(--display);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.navbar .navbar-nav { gap: 6px 26px; align-items: center; }
+.navbar .nav-link {
+  color: var(--ink) !important;
+  font: 600 16px/1 var(--display);
+  padding: 8px 0 !important;
+  border-bottom: 2px solid transparent;
+  opacity: 1;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active,
+.navbar .nav-item.active .nav-link { border-bottom-color: var(--ink); }
+
+// "Send us a find" call to action (last navbar item, href contains submit).
+.navbar .nav-link[href*="submit"],
+.navbar .quarto-navbar-tools .nav-link[href*="submit"] {
+  background: var(--accent);
+  color: #fff !important;
+  font: 700 16px/1 var(--display);
+  padding: 13px 18px !important;
+  border-bottom: 0;
+  transition: transform 160ms cubic-bezier(.2,.8,.2,1), background 160ms;
+}
+.navbar .nav-link[href*="submit"]:hover {
+  background: var(--accent-deep);
+  transform: translateX(3px);
+}
+.navbar-toggler { border-color: var(--ink); }
+
+// ---------------------------------------------------------------------------
+// Hero  (home title block, rendered by _partials/title-block.html when no question)
+// ---------------------------------------------------------------------------
+#title-block-header.quarto-title-block {
+  padding: 40px var(--gutter) 8px;
+  margin: 0;
+}
+#title-block-header .title {
+  font: 800 clamp(44px, 6.4vw, 84px)/0.92 var(--display);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  max-width: 18ch;
+}
+#title-block-header .subtitle,
+#title-block-header .lead-description {
+  font-family: var(--body);
+  font-size: 19px;
+  font-weight: 400;
+  max-width: 46ch;
+  color: var(--ink);
+  margin-top: 18px;
+}
+
+// ---------------------------------------------------------------------------
+// Category filters  (Quarto category cloud on the listing page)
+// ---------------------------------------------------------------------------
+.quarto-listing-category {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  padding: 28px var(--gutter) 0;
+}
+.quarto-listing-category-title { display: none; }
+.quarto-listing-category .category {
+  color: var(--ink);
+  font: 600 15px/1 var(--display);
+  padding: 6px 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  opacity: 1;
+}
+.quarto-listing-category .category.active,
+.quarto-listing-category .category:hover { border-bottom-color: var(--ink); }
+.quarto-category-count { color: var(--ink-soft); font-weight: 500; }
+
+// Swatch before each named category, coloured by tag (mockup filters row).
+.quarto-listing-category .category[data-category]:not([data-category=""])::before {
+  content: "";
+  display: inline-block;
+  width: 10px; height: 10px;
+  margin-right: 8px;
+  vertical-align: 1px;
+  background: var(--tag, var(--ink));
+  border: 1px solid var(--ink);
+}
+.quarto-listing-category .category[data-category="Glia"] { --tag: var(--tag-glia); }
+.quarto-listing-category .category[data-category="Synapse"] { --tag: var(--tag-synapse); }
+.quarto-listing-category .category[data-category="Mitochondria"] { --tag: var(--tag-mito); }
+.quarto-listing-category .category[data-category="Artifact"] { --tag: var(--tag-artifact); }
+.quarto-listing-category .category[data-category="Blood vessel"],
+.quarto-listing-category .category[data-category="Vessel"] { --tag: var(--tag-vessel); }
+
+// ---------------------------------------------------------------------------
+// Listing grid  (custom template listings/find-card.ejs.md emits .grid/.print)
+// ---------------------------------------------------------------------------
+.grid.find-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  padding: 28px var(--gutter) 72px;
+  margin: 0;
+}
+.print {
+  background: var(--paper);
+  padding: 10px 10px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 14px 30px rgba(0,0,0,0.14);
+}
+.print > a { display: block; }
+.print img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #000;
+  display: block;
+}
+.print .q {
+  font-style: italic;
+  color: #555;
+  font-size: 16px;
+  line-height: 1.45;
+  padding: 0 6px;
+  margin: 0;
+}
+.print .asker { font-size: 13px; color: #555; padding: 0 6px; margin: 0; }
+.print h2 { font: 700 24px/1.12 var(--display); text-wrap: balance; padding: 0 6px; margin: 0; }
+.print h2 a { color: var(--ink); text-decoration: none; }
+.print h2 a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #555;
+  padding: 0 6px;
+  margin-top: auto;
+}
+.who .av {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: grid; place-items: center;
+  font: 700 11px/1 var(--display);
+  flex: none;
+}
+.who .tag { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); }
+.sw { width: 10px; height: 10px; background: var(--tag, var(--ink)); border: 1px solid var(--ink); display: inline-block; flex: none; }
+
+// ---------------------------------------------------------------------------
+// Post page  (main.content becomes the white sheet on the ground)
+// ---------------------------------------------------------------------------
+body:has(.post-head.question-first) main.content,
+body:has(.ask) main.content {
+  background: var(--paper);
+  max-width: 820px;
+  margin: 24px auto 96px;
+  padding: 0 clamp(16px, 5vw, 56px) 64px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 14px 30px rgba(0,0,0,0.14);
+}
+
+// Question-first header (from _partials/title-block.html)
+.post-head { padding: 24px 0 28px; margin: 0; border: 0; }
+.post-head .meta {
+  display: flex; gap: 8px 18px; align-items: center;
+  font: 600 15px/1 var(--display);
+  margin-bottom: 22px; flex-wrap: wrap;
+}
+.post-head .meta .tag { display: inline-flex; align-items: center; gap: 7px; }
+.ask { margin: 8px 0 28px; max-width: 760px; }
+.ask-who {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 16px; color: var(--ink-soft); margin-bottom: 16px;
+}
+.ask-who b { color: var(--ink); }
+.ask-who .av {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: grid; place-items: center;
+  font: 800 18px/1 var(--display); flex: none;
+}
+.ask-text {
+  border: 0; padding: 0; margin: 0;
+}
+.ask-text p, .ask-text {
+  font: 600 clamp(22px, 3vw, 32px)/1.28 var(--display);
+  letter-spacing: -0.02em; color: var(--ink);
+  margin-bottom: 0.55em;
+}
+.post-head .title.answer {
+  font: 800 clamp(30px, 3.8vw, 44px)/1.0 var(--display);
+  color: var(--ink-soft);
+  margin: 0;
+}
+.post-head .title.answer::before { content: "The answer: "; color: var(--ink); }
+
+// Prose (post body inside the sheet)
+main.content > p,
+main.content > ul,
+main.content > ol,
+main.content > blockquote { max-width: 68ch; }
+main.content > p { font-size: 18px; line-height: 1.65; margin-bottom: 1.2em; }
+main.content > h2 { font: 700 28px/1.15 var(--display); margin: 44px 0 14px; }
+main.content > h3 { font: 700 21px/1.2 var(--display); margin: 32px 0 10px; }
+dfn { font-style: normal; border-bottom: 1px dotted #555; }
+
+// Inline citation (TASK-5 emits <a class="cite">[1]</a>)
+.cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+
+// Speculation callout
+.spec mark, .spec .mark-inline, mark {
+  background: var(--mark);
+  padding: 0.05em 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.spec .lbl {
+  display: inline-block;
+  font: 700 12px/1 var(--display);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--accent-deep); margin-right: 8px; vertical-align: 2px;
+}
+
+// ---------------------------------------------------------------------------
+// Generated ngsnap figure + Neuroglancer badge  (TASK-6 / TASK-7)
+// ---------------------------------------------------------------------------
+.sheet { background: var(--paper); padding: 10px 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 14px 30px rgba(0,0,0,0.14); }
+.sheet figure { margin: 0; }
+.sheet figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #000; display: block; }
+.sheet figcaption {
+  display: flex; justify-content: space-between; gap: 20px; align-items: flex-start;
+  padding: 12px 6px 4px; font-size: 15px; color: #555; line-height: 1.5;
+}
+.ng-badge {
+  flex: none; display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; text-decoration: none;
+  font: 700 14px/1 var(--display); padding: 9px 13px;
+}
+.ng-badge svg { width: 14px; height: 14px; }
+.ng-badge:hover { background: var(--accent-deep); }
+
+// ---------------------------------------------------------------------------
+// Author card  (TASK-4)
+// ---------------------------------------------------------------------------
+// Quarto floats bare <aside> into the margin column; keep the card in-flow.
+.author-card, aside.author-card {
+  display: grid; grid-template-columns: 60px 1fr auto; grid-template-rows: auto auto;
+  gap: 4px 18px; align-items: center;
+  background: var(--accent); color: #fff; padding: 18px 22px; margin: 44px 0 0;
+  grid-column: 1 / -1 !important;
+  width: auto; z-index: auto; font-size: 15px;
+}
+.author-card .av {
+  grid-column: 1; grid-row: 1 / 3; width: 60px; height: 60px; border-radius: 50%;
+  background: #fff; color: var(--accent-deep);
+  display: grid; place-items: center; font: 800 21px/1 var(--display);
+}
+.author-card .name { grid-column: 2; grid-row: 1; align-self: end; font: 700 19px/1.2 var(--display); color: #fff; }
+.author-card .name small { font: 400 14px/1 var(--body); color: #fff; margin-left: 8px; }
+.author-card .role { grid-column: 2; grid-row: 2; align-self: start; font-size: 15px; color: #fff; margin: 0; }
+.author-card .links { grid-column: 3; grid-row: 1 / 3; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.author-card .links a { font: 600 13px/1 var(--display); padding: 7px 11px; border: 1px solid #fff; color: #fff; text-decoration: none; }
+.author-card .links a:hover { background: #fff; color: var(--accent-deep); }
+
+// ---------------------------------------------------------------------------
+// Reference list  (TASK-5)
+// ---------------------------------------------------------------------------
+.refs { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--ink); }
+.refs h2 { font: 700 20px/1.2 var(--display); margin-bottom: 12px; }
+.refs ol { padding-left: 1.4em; font-size: 15px; line-height: 1.55; color: #555; }
+.refs li { margin-bottom: 10px; }
+
+// ---------------------------------------------------------------------------
+// Code blocks and tables
+// ---------------------------------------------------------------------------
+pre, code, .sourceCode { font-family: "JetBrains Mono", ui-monospace, monospace; }
+div.sourceCode, pre:not(.sourceCode) {
+  background: #f2f3fb;
+  border: 1px solid #d3d7ee;
+  border-radius: 0;
+  padding: 14px 16px;
+  font-size: 14.5px;
+}
+div.sourceCode pre.sourceCode {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 14.5px;
+}
+code:not(.sourceCode) {
+  background: #f2f3fb;
+  color: var(--accent-deep);
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+main.content table, table.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 15px;
+}
+main.content table th {
+  font-family: var(--display);
+  text-align: left;
+  border-bottom: 2px solid var(--ink);
+  padding: 8px 10px;
+}
+main.content table td { border-bottom: 1px solid #d3d7ee; padding: 8px 10px; }
+
+// Post body figures (Quarto default figure markup)
+main.content .quarto-figure, main.content figure.figure { margin: 24px 0; }
+main.content figure.figure img, main.content .figure-img { width: 100%; background: #000; }
+.figure-caption, figcaption { font-size: 15px; color: #555; margin-top: 8px; }
+
+// ---------------------------------------------------------------------------
+// Footer  (Quarto page-footer)
+// ---------------------------------------------------------------------------
+.nav-footer, footer.footer {
+  background: var(--cover);
+  color: var(--ink);
+  border-top: 1px solid var(--ink);
+  margin: 0 var(--gutter);
+  padding: 28px 0 56px;
+  font-size: 15px;
+  max-width: none;
+}
+.nav-footer .nav-footer-center, .nav-footer .nav-footer-left, .nav-footer .nav-footer-right { color: var(--ink); }
+.nav-footer a { color: var(--ink); }
+
+// ---------------------------------------------------------------------------
+// Responsive
+// ---------------------------------------------------------------------------
+@media (max-width: 960px) {
+  .grid.find-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .grid.find-grid { grid-template-columns: 1fr; }
+  .sheet figcaption { flex-direction: column; }
+  .author-card { grid-template-columns: 52px 1fr; }
+  .author-card .av { width: 52px; height: 52px; }
+  .author-card .links { grid-column: 1 / -1; grid-row: 3; justify-content: flex-start; margin-top: 8px; }
+}

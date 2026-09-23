@@ -3,14 +3,39 @@ project:
   output-dir: _site
   render:
     - index.qmd
+    - fixtures.qmd
     - posts/
 
 website:
   title: "Notes from the Neuropil"
+  search: false
   navbar:
+    background: light
+    title: "Notes from the Neuropil"
     left:
       - href: index.qmd
-        text: Home
+        text: Finds
+      - href: "#glossary"
+        text: Glossary
+      - href: "#about"
+        text: About
+    right:
+      - href: "#submit"
+        text: "Send us a question"
+  page-footer:
+    center: |
+      Notes from the Neuropil is an independent site kept by scientists who spend
+      their days inside these datasets. Found something strange in Neuroglancer?
+      Send us the link and your question.
+
+format:
+  html:
+    theme: theme.scss
+    toc: false
+    anchor-sections: false
+    include-in-header: include-head.html
+    template-partials:
+      - _partials/title-block.html
 
 execute:
   enabled: false

@@ -1,0 +1,27 @@
+$-- Notes from the Neuropil custom title block.
+$-- Posts set a "question" in front matter and get the question-first header.
+$-- Pages with no question (home, About, fixtures) get the plain hero header.
+$if(question)$
+<header id="title-block-header" class="quarto-title-block post-head question-first">
+  <p class="meta">
+    $for(categories)$<span class="tag" data-tag="$categories$"><span class="sw"></span>$categories$</span>$endfor$
+    $if(date)$<time>$date$</time>$endif$
+  </p>
+  <section class="ask">
+    <div class="ask-who">
+      <span class="av">$if(asker-initial)$$asker-initial$$else$?$endif$</span>
+      <p><b>$if(asker)$$asker$$else$A reader$endif$</b> sent us this question, with a Neuroglancer link.</p>
+    </div>
+    <blockquote class="ask-text">$question$</blockquote>
+  </section>
+  <h1 class="title answer">$title$</h1>
+</header>
+$else$
+<header id="title-block-header" class="quarto-title-block default">
+  <div class="quarto-title">
+    <h1 class="title">$title$</h1>
+    $if(subtitle)$<p class="subtitle lead">$subtitle$</p>$endif$
+  </div>
+  $if(hide-description)$$elseif(description)$<p class="lead-description">$description$</p>$endif$
+</header>
+$endif$

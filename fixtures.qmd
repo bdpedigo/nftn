@@ -1,0 +1,72 @@
+---
+title: "Theme fixtures"
+subtitle: "Static markup for elements that later tasks will emit. Use this page to confirm the theme styles each element before the tasks that generate them exist."
+---
+
+## Generated Neuroglancer figure (TASK-6 badge, TASK-7 figure)
+
+```{=html}
+<div class="sheet">
+  <figure>
+    <img src="assets/sample-figure.png" alt="Four-panel Neuroglancer view: three grey electron microscopy slices and one black 3D panel with a small blue cell process">
+    <figcaption>
+      <span>A microglial process (blue) wrapped around a dendritic spine. Three slices through the tissue and one 3D view of the same cell, rendered from the link they sent.</span>
+      <a class="ng-badge" href="#neuroglancer">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13"/><path d="M8 1.5v13M1.5 8h13"/><rect x="1.5" y="8" width="6.5" height="6.5" fill="currentColor" stroke="none"/></svg>
+        Open the link they sent
+      </a>
+    </figcaption>
+  </figure>
+</div>
+```
+
+## Neuroglancer badge on its own (TASK-6)
+
+```{=html}
+<p>
+  <a class="ng-badge" href="#neuroglancer">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13"/><path d="M8 1.5v13M1.5 8h13"/><rect x="1.5" y="8" width="6.5" height="6.5" fill="currentColor" stroke="none"/></svg>
+    Open in Neuroglancer
+  </a>
+</p>
+```
+
+## Author block (TASK-4)
+
+```{=html}
+<aside class="author-card">
+  <span class="av">BP</span>
+  <p class="name">Ben Pedigo <small>answered this one</small></p>
+  <p class="role">Neuroscientist. Spends most days looking at cells that are not neurons.</p>
+  <p class="links"><a href="#github">GitHub</a><a href="#orcid">ORCID</a><a href="#web">Website</a></p>
+</aside>
+```
+
+## Prose elements: code and tables
+
+Inline `code` sits in the run of text. A fenced block:
+
+```python
+def open_link(url: str) -> None:
+    """Open a Neuroglancer state in the default browser."""
+    webbrowser.open(url)
+```
+
+| Layer type | Neuroglancer colour | Token |
+|------------|---------------------|-------|
+| Glia | purple | `--tag-glia` |
+| Synapse | teal | `--tag-synapse` |
+| Mitochondria | green | `--tag-mito` |
+
+## Inline citation and reference list (TASK-5)
+
+```{=html}
+<p>Microglia are the brain's resident immune cells<a href="#ref1" class="cite">[1]</a>, and synaptic pruning continues at a lower rate in adults<a href="#ref2" class="cite">[2]</a>.</p>
+<section class="refs">
+  <h2>References</h2>
+  <ol>
+    <li id="ref1">Schafer, D.P. et al. "Microglia sculpt postnatal neural circuits in an activity and complement-dependent manner." <em>Neuron</em>, 74(4), 691-705, 2012. <a href="#doi1">doi:10.1016/j.neuron.2012.03.026</a></li>
+    <li id="ref2">Paolicelli, R.C. et al. "Synaptic pruning by microglia is necessary for normal brain development." <em>Science</em>, 333(6048), 1456-1458, 2011. <a href="#doi2">doi:10.1126/science.1202529</a></li>
+  </ol>
+</section>
+```

@@ -1,13 +1,11 @@
 ---
-title: "Notes from the Neuropil"
+title: "Strange things people found in the brain."
+subtitle: "Readers send us weird finds from Neuroglancer. Scientists who work in that data write back and explain what they are."
 listing:
+  id: finds
   contents: posts
   sort: "date desc"
-  categories: true
-  type: default
-  date-format: "YYYY-MM-DD"
-  fields: [date, title, description, categories]
+  categories: false
+  template: listings/find-card.ejs.md
+  fields: [image, title, question, asker, author, categories, date]
 ---
-
-People submit something weird they found in Neuroglancer, and the team responds
-with a short post that explains (or speculates about) what it is.
