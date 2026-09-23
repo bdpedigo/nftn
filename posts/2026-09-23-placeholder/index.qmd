@@ -7,7 +7,7 @@ asker: "Priya"
 asker-initial: "P"
 author: "Ben Pedigo"
 image: sample-figure.png
-description: "A placeholder post that demonstrates the site scaffolding and the question-first layout."
+description: "A reader spotted a dark blob that looked like it was swallowing a dendritic spine in Neuroglancer. A scientist explains why a microglial cell eats synapses, and how to spot one."
 ---
 
 Priya, it is a real cell, and it is doing exactly what it looks like. The dark

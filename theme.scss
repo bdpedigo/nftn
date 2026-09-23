@@ -367,6 +367,22 @@ dfn { font-style: normal; border-bottom: 1px dotted #555; }
 .ng-badge:hover, .ng-badge:focus { background: var(--accent-deep); color: #fff; }
 
 // ---------------------------------------------------------------------------
+// giscus comments
+// ---------------------------------------------------------------------------
+// Quarto injects the widget after </main>, so it spans the full page width by
+// default. Constrain it to the post column and match the sheet padding, so the
+// thread aligns under the post text instead of running edge to edge.
+.giscus, .giscus-frame {
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.giscus {
+  margin-bottom: 88px;
+  padding: 0 clamp(16px, 5vw, 56px);
+}
+
+// ---------------------------------------------------------------------------
 // Author card  (TASK-4)
 // ---------------------------------------------------------------------------
 // Quarto floats bare <aside> into the margin column; keep the card in-flow.
