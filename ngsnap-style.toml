@@ -25,4 +25,4 @@ viewerSize = [
 ]
 
 [config.scaleBarOptions]
-scaleFactor = 1
+scaleFactor = 3
