@@ -363,7 +363,8 @@ dfn { font-style: normal; border-bottom: 1px dotted #555; }
   font: 700 14px/1 var(--display); padding: 9px 13px;
 }
 .ng-badge svg { width: 14px; height: 14px; }
-.ng-badge:hover { background: var(--accent-deep); }
+// Keep the label white on hover/focus (Bootstrap's a:hover would turn it blue).
+.ng-badge:hover, .ng-badge:focus { background: var(--accent-deep); color: #fff; }
 
 // ---------------------------------------------------------------------------
 // Author card  (TASK-4)

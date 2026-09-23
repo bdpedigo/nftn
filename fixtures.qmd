@@ -31,6 +31,17 @@ subtitle: "Static markup for elements that later tasks will emit. Use this page 
 </p>
 ```
 
+## Neuroglancer link detection (TASK-6 filter)
+
+Each Neuroglancer link below is written as a plain markdown link or a bare URL.
+The `ngbadge.lua` filter turns each one into the badge above. The GitHub link is
+not a configured Neuroglancer host, so it stays a normal link.
+
+- Markdown link: [a find in the demo](https://neuroglancer-demo.appspot.com/#!%7B%22layers%22%3A%5B%5D%7D)
+- Bare URL with `#!` state: https://neuroglancer-demo.appspot.com/#!%7B%22layers%22%3A%5B%5D%7D
+- `#!middleauth+https://` state: [an authenticated state](https://spelunker.cave-explorer.org/#!middleauth+https://global.daf-apis.com/nglstate/api/v1/5678901234)
+- A non-Neuroglancer link: [the Neuroglancer source on GitHub](https://github.com/google/neuroglancer)
+
 ## Author block (TASK-4)
 
 ```{=html}

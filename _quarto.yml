@@ -7,6 +7,13 @@ project:
     - submit.qmd
     - posts/
 
+# Neuroglancer deployments whose links render as a badge (see ngbadge.lua).
+# One source of truth; add the team's own deployment hosts here.
+neuroglancer:
+  hosts:
+    - neuroglancer-demo.appspot.com
+    - spelunker.cave-explorer.org
+
 website:
   title: "Notes from the Neuropil"
   search: false
@@ -37,6 +44,8 @@ format:
     include-in-header: include-head.html
     template-partials:
       - _partials/title-block.html
+    filters:
+      - ngbadge.lua
 
 execute:
   enabled: false

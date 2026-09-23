@@ -5,8 +5,16 @@ subtitle: "Found something strange in Neuroglancer? Send us the link and your qu
 
 ```{=html}
 <div class="form-embed">
-<iframe src="{{< var form_url >}}?embedded=true" title="Submission form for questions and finds" loading="lazy">Loading the form…</iframe>
+<iframe title="Submission form for questions and finds" loading="lazy" data-form-url="{{< var form_url >}}">Loading the form…</iframe>
 </div>
+<script>
+(function () {
+  var iframe = document.currentScript.previousElementSibling.querySelector("iframe");
+  var url = new URL(iframe.dataset.formUrl);
+  url.searchParams.set("embedded", "true");
+  iframe.src = url.toString();
+})();
+</script>
 ```
 
 Trouble seeing the form? [Open it in a new tab]({{< var form_url >}}){target="_blank" rel="noopener"}.
