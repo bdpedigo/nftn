@@ -1,0 +1,16 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - posts/
+
+website:
+  title: "Notes from the Neuropil"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+
+execute:
+  enabled: false

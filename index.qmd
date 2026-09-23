@@ -1,0 +1,13 @@
+---
+title: "Notes from the Neuropil"
+listing:
+  contents: posts
+  sort: "date desc"
+  categories: true
+  type: default
+  date-format: "YYYY-MM-DD"
+  fields: [date, title, description, categories]
+---
+
+People submit something weird they found in Neuroglancer, and the team responds
+with a short post that explains (or speculates about) what it is.
