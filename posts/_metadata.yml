@@ -3,20 +3,15 @@
 # the submission form, so giscus comments appear on posts only.
 
 # giscus comments, backed by GitHub Discussions on the site repo.
-#
-# PLACEHOLDER: repo-id and category-id are blank until Ben, as repo admin:
-#   1. Enables Discussions on github.com/bdpedigo/nftn.
-#   2. Installs the giscus app (https://github.com/apps/giscus) on the repo.
-#   3. Runs the configurator at https://giscus.app with repo bdpedigo/nftn and
-#      the chosen category, then copies data-repo-id and data-category-id here.
-# giscus does not load until both IDs are filled in.
+# The "Comments" category uses the Announcement format, so only the giscus app
+# opens a thread per post and readers only reply. repo-id and category-id come
+# from the repo's GraphQL API.
 comments:
   giscus:
     repo: bdpedigo/nftn
-    repo-id: ""
-    # Create a Discussions category (for example "Comments") for post threads.
+    repo-id: "R_kgDOUnpBGg"
     category: "Comments"
-    category-id: ""
+    category-id: "DIC_kwDOUnpBGs4DGQeH"
     # One discussion per post URL path.
     mapping: pathname
     reactions-enabled: true
