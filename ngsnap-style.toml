@@ -1,0 +1,28 @@
+# Notes from the Neuropil house style for Neuroglancer figures (TASK-7).
+# Loaded by scripts/render_figures.py with ngsnap Spec.from_file(). Edit here to
+# change the look of every generated figure. Generated from Spec.default().
+respects = [
+    "crossSectionScale",
+    "layers[].segments",
+    "layers[].visible",
+    "position",
+    "projectionScale",
+]
+
+[template]
+showScaleBar = true
+showAxisLines = false
+showDefaultAnnotations = false
+crossSectionBackgroundColor = "#000000"
+projectionBackgroundColor = "#000000"
+
+[config]
+showUIControls = false
+showPanelBorders = false
+viewerSize = [
+    1600,
+    1200,
+]
+
+[config.scaleBarOptions]
+scaleFactor = 1

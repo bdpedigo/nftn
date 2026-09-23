@@ -16,7 +16,7 @@ of [phagocytosis]{.dfn}, which is the cell eating something. Microglia are the
 brain's resident immune cells. When a synapse is tagged for removal, a
 microglial branch extends toward it, wraps around the target, and engulfs it.
 
-![A microglial process (blue) wrapped around a dendritic spine. Three slices through the tissue and one 3D view of the same cell.](sample-figure.png)
+https://neuroglancer-demo.appspot.com#!%7B%22layers%22:%5B%7B%22type%22:%22image%22,%22source%22:%22precomputed://gs://neuroglancer-public-data/flyem_fib-25/image%22,%22name%22:%22image%22%7D,%7B%22type%22:%22segmentation%22,%22source%22:%22precomputed://gs://neuroglancer-public-data/flyem_fib-25/ground_truth%22,%22name%22:%22seg%22,%22segments%22:%5B%2221894%22%5D%7D%5D,%22layout%22:%224panel%22,%22showSlices%22:true%7D
 
 ## Why a cell would eat a synapse
 

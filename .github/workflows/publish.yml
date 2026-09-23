@@ -18,8 +18,21 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+
+      # ngsnap renders the Neuroglancer figures during quarto render (TASK-7).
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install build tooling (ngsnap from git)
+        run: uv sync
+
+      - name: Install the pinned Chrome for Testing browser
+        run: uv run python -c "from ngsnap.render import install_browser; install_browser()"
 
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
@@ -31,11 +44,24 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
+      # publish re-renders the site, so it also needs ngsnap and the browser.
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install build tooling (ngsnap from git)
+        run: uv sync
+
+      - name: Install the pinned Chrome for Testing browser
+        run: uv run python -c "from ngsnap.render import install_browser; install_browser()"
 
       - uses: quarto-dev/quarto-actions/setup@v2
         with:

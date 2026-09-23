@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: _site
+  # Render Neuroglancer figures with ngsnap before Quarto builds the pages.
+  pre-render: uv run python scripts/render_figures.py
+  # figures/ is gitignored and produced at build time; force Quarto to copy it.
+  resources:
+    - figures/
   render:
     - index.qmd
     - fixtures.qmd

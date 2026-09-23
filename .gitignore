@@ -232,3 +232,6 @@ _site/
 .impeccable
 design
 .DS_Store
+
+# Generated Neuroglancer figures (TASK-7): content-addressed, rebuilt on demand.
+/figures/

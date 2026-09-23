@@ -1,0 +1,16 @@
+[project]
+name = "nftn-build"
+version = "0.0.0"
+description = "Build tooling for the Notes from the Neuropil site: renders Neuroglancer figures with ngsnap during the Quarto build."
+requires-python = ">=3.13"
+dependencies = [
+    # ngsnap is not published yet, so install it from git for now (TASK-7).
+    # The 'render' extra pulls Selenium for real headless-browser renders.
+    # uv.lock pins the exact commit for reproducible builds.
+    "ngsnap[render] @ git+https://github.com/bdpedigo/ngsnap.git",
+    "pyyaml>=6.0",
+]
+
+[tool.uv]
+# This project is build tooling, not an installable package.
+package = false
