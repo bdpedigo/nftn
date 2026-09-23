@@ -140,6 +140,54 @@ local function has_class(attr, cls)
   return false
 end
 
+-- Social card image fallback.
+-- Quarto emits the page card image from, in order: the `image` front matter,
+-- then the first image it finds in the rendered page. Quarto 1.3 does not fall
+-- back to a site-level default, so pages with no image of their own (for
+-- example the submission form) emit no og:image. Set that default here, but
+-- only when the page truly has no image: no `image` front matter and no image
+-- anywhere in the body. This keeps the front matter override and Quarto's
+-- first-image detection (including a generated Neuroglancer figure) intact.
+
+-- Does the document body contain any image? Scans for a pandoc Image element or
+-- a raw HTML <img (the figure pass emits the Neuroglancer figure as raw HTML).
+local function body_has_image(blocks)
+  local found = false
+  pandoc.walk_block(pandoc.Div(blocks), {
+    Image = function() found = true end,
+    RawInline = function(el) if el.text:lower():find("<img") then found = true end end,
+    RawBlock = function(el) if el.text:lower():find("<img") then found = true end end,
+  })
+  return found
+end
+
+local function set_default_card_image(doc)
+  local m = doc.meta
+  -- Front matter image wins; never override it.
+  if m.image ~= nil then return doc end
+  -- A listing page (the home page) gets its card image from the first listed
+  -- item; let Quarto handle that instead of forcing the default.
+  if m.listing ~= nil then return doc end
+  -- Any image in the body means Quarto picks the first one for the card.
+  if body_has_image(doc.blocks) then return doc end
+  -- No image anywhere: fall back to the one site-level default card.
+  -- Quarto ignores an `image` set from a Lua filter for card generation, so
+  -- inject the card meta tags into the page head with the Quarto filter API.
+  local default = pandoc.utils.stringify(m["social-card"] or "")
+  if default == "" then return doc end
+  -- The header API exists only under `quarto render`, not raw pandoc.
+  if not (quarto and quarto.doc and quarto.doc.include_text) then return doc end
+  local url = attr_escape(default)
+  local head = table.concat({
+    '<meta property="og:image" content="' .. url .. '">',
+    '<meta property="og:image:width" content="1200">',
+    '<meta property="og:image:height" content="630">',
+    '<meta name="twitter:image" content="' .. url .. '">',
+  }, "\n")
+  quarto.doc.include_text("in-header", head)
+  return doc
+end
+
 return {
   { Meta = function(m)
       hosts = read_hosts(m)
@@ -180,4 +228,8 @@ return {
       return nil
     end,
   },
+
+  -- Runs last, after the figure pass has injected any figure <img>, so the
+  -- body-image check sees generated Neuroglancer figures too.
+  { Pandoc = set_default_card_image },
 }
