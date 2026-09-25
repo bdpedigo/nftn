@@ -1,18 +1,17 @@
 ---
 title: "About"
-subtitle: "Who we are, and why we answer strange questions about the brain."
 ---
 
 Notes from the Neuropil is currently written by the Connectomics team at the Allen Institute, but we welcome contributions!
 
 We are scientists who work on generating large volumetric maps of what neural tissue 
-looks like and how cells are connected in those circuits. The [MICrONS dataset](https://www.microns-explorer.org/)
-was a recent example, in which our team mapped a cubic millimeter of mouse visual cortex at synaptic resolution.
+looks like and how cells connect to each other to form neural circuits. The [MICrONS dataset](https://www.microns-explorer.org/)
+was a recent example, in which our team (along with colleagues at Princeton and Baylor College of Medicine) mapped a cubic millimeter of mouse visual cortex at synaptic resolution.
 
-As more people explored the data, we noticed that they were often finding structures that many people on our team were unfamiliar with themselves!
+As more people explore the data, people are often finding structures that even researchers on our team are unfamiliar with.
 Often these findings reveal things we don't (yet) understand ourselves or have never seen before - and that is the exciting part of doing science!
 We wanted to have a place to collect these observations from students, scientists, and curious 
-members of the public, and share what we think people are looking at in Neuroglancer.
+members of the public. We then share what (we think) people are looking at in Neuroglancer, and what it might be doing in the brain.
 
-So -- please share your observations with us! Click the submission form above to get in touch.
+So -- please share your observations with us! Click the ["Send us a question"](submit.qmd) button to get in touch.
 
