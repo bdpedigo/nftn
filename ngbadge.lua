@@ -180,8 +180,8 @@ local function set_default_card_image(doc)
   local m = doc.meta
   -- Front matter image wins; never override it.
   if m.image ~= nil then return doc end
-  -- A listing page (the home page) gets its card image from the first listed
-  -- item; let Quarto handle that instead of forcing the default.
+  -- A listing page gets its card image from the first listed item; let Quarto
+  -- handle that instead of forcing the default.
   if m.listing ~= nil then return doc end
   -- Any image in the body means Quarto picks the first one for the card.
   if body_has_image(doc.blocks) then return doc end

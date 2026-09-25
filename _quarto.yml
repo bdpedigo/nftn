@@ -12,6 +12,7 @@ project:
     - index.qmd
     - fixtures.qmd
     - submit.qmd
+    - glossary.qmd
     - about.qmd
     - posts/
 
@@ -48,7 +49,7 @@ website:
     left:
       - href: index.qmd
         text: Finds
-      - href: "#glossary"
+      - href: glossary.qmd
         text: Glossary
       - href: about.qmd
         text: About

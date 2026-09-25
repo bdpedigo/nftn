@@ -2,11 +2,10 @@
 title: "What is that mesh covering the soma of this cell?"
 date: "2026-09-24"
 categories:
-question: "I was looking around at what was nearby the soma of this cell. One of the objects I clicked on looked like it almost completely covered the soma! Is this some kind of glial cell?"
+question: "I was looking around at what was nearby the soma of this cell. One of the objects I clicked on looked like it almost completely covered the soma. Is this some kind of glial cell?"
 asker: "Bethanny Danskin"
 asker-initial: "BD"
 author: "Ben Pedigo"
-image: sample-figure.png
 description: "A reader spotted a mesh-like structure covering the soma of a cell in Neuroglancer. A scientist explains what it is and how to identify it."
 bibliography: references.bib
 ---

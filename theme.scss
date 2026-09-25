@@ -227,6 +227,7 @@ body { padding-top: 0 !important; }
   margin: 0;
 }
 .print {
+  position: relative;
   background: var(--paper);
   padding: 10px 10px 18px;
   display: flex;
@@ -235,6 +236,7 @@ body { padding-top: 0 !important; }
   box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 14px 30px rgba(0,0,0,0.14);
 }
 .print > a { display: block; }
+.print .card-img-top { margin: 0; }
 .print img {
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -253,7 +255,9 @@ body { padding-top: 0 !important; }
 .print .asker { font-size: 13px; color: #555; padding: 0 6px; margin: 0; }
 .print h2 { font: 700 24px/1.12 var(--display); text-wrap: balance; padding: 0 6px; margin: 0; }
 .print h2 a { color: var(--ink); text-decoration: none; }
-.print h2 a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
+// Stretch the title link over the whole card so any click opens the post.
+.print h2 a::after { content: ""; position: absolute; inset: 0; }
+.print:hover h2 a { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
 .who {
   display: flex;
   align-items: center;
@@ -318,7 +322,7 @@ body:has(.ask) main.content {
   color: var(--ink-soft);
   margin: 0;
 }
-.post-head .title.answer::before { content: "The answer: "; color: var(--ink); }
+// .post-head .title.answer::before { content: "Question "; color: var(--ink); }
 
 // Prose (post body inside the sheet, and plain pages like About).
 // Pandoc wraps each heading and its content in <section>, so match both levels.

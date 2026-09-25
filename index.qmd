@@ -1,6 +1,9 @@
 ---
 title: "Strange things people found in the brain."
 subtitle: "Readers send us weird finds from Neuroglancer. Scientists who work in that data write back and explain what they are."
+# Explicit, because Quarto picks a listing page's card image before it fills in
+# listing cards that fall back to their post's first image.
+image: assets/social-card.png
 listing:
   id: finds
   contents: posts
