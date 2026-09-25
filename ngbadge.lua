@@ -41,27 +41,44 @@ local function attr_escape(s)
   return (s:gsub("&", "&amp;"):gsub('"', "&quot;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
 end
 
-local function badge_html(url, label)
+local function badge_html(url)
   return '<a class="ng-badge" href="' .. attr_escape(url) .. '" target="_blank" rel="noopener">'
-    .. ICON .. (label or "Open in Neuroglancer") .. "</a>"
+    .. ICON .. "Open in Neuroglancer</a>"
 end
 
 local function badge(url)
   return pandoc.RawInline("html", badge_html(url))
 end
 
--- A figure: the pre-rendered image on a .sheet with the badge as its caption.
+-- A figure: the pre-rendered image on a .sheet, captioned by the markdown link
+-- text (if any) beside the badge. The caption stays pandoc inlines, not raw
+-- HTML, so emphasis and citations in it are still processed downstream.
 -- The image path is site-root-relative ("/figures/..."); Quarto rewrites it to
 -- the correct relative path per page, so it is safe under the Pages base path.
-local function figure(url)
+local function figure(url, caption)
   local path = figures[url]
   if not path then return nil end
-  local html = '<div class="sheet"><figure>'
-    .. '<img src="/' .. attr_escape(path) .. '" alt="Neuroglancer render of the find">'
-    .. '<figcaption><span>Rendered from the Neuroglancer link they sent.</span>'
-    .. badge_html(url, "Open the link they sent")
-    .. "</figcaption></figure></div>"
-  return pandoc.RawBlock("html", html)
+  local alt = "Neuroglancer render of the find"
+  if caption and #caption > 0 then alt = pandoc.utils.stringify(caption) end
+  local inlines = { pandoc.RawInline("html", '<div class="sheet"><figure>'
+    .. '<img src="/' .. attr_escape(path) .. '" alt="' .. attr_escape(alt) .. '">'
+    .. "<figcaption>") }
+  if caption and #caption > 0 then
+    table.insert(inlines, pandoc.RawInline("html", "<span>"))
+    for _, il in ipairs(caption) do table.insert(inlines, il) end
+    table.insert(inlines, pandoc.RawInline("html", "</span>"))
+  end
+  table.insert(inlines, pandoc.RawInline("html",
+    badge_html(url) .. "</figcaption></figure></div>"))
+  return pandoc.Plain(inlines)
+end
+
+-- Link text is a caption only when the author wrote some; an autolink or
+-- [url](url) just repeats the URL.
+local function link_caption(link)
+  if link.t ~= "Link" then return nil end
+  if pandoc.utils.stringify(link.content) == link.target then return nil end
+  return link.content
 end
 
 local function read_hosts(meta)
@@ -101,8 +118,6 @@ local function read_manifest()
   if not ok or type(data) ~= "table" then return {} end
   local map = {}
   for url, entry in pairs(data) do
-    -- Include placeholders (ok == false) too, so a browser-less local build
-    -- shows the placeholder image rather than falling back to a badge.
     if type(entry) == "table" and entry.path then
       map[url] = entry.path
     end
@@ -110,7 +125,7 @@ local function read_manifest()
   return map
 end
 
--- Is this block a single Neuroglancer link on its own? Returns url, attr.
+-- Is this block a single Neuroglancer link on its own? Returns url, attr, link.
 local function sole_link(inlines)
   local link, count = nil, 0
   for _, il in ipairs(inlines) do
@@ -128,8 +143,8 @@ local function sole_link(inlines)
     end
   end
   if count ~= 1 then return nil end
-  if link.t == "Link" then return link.target, link.attr end
-  return link.text, nil
+  if link.t == "Link" then return link.target, link.attr, link end
+  return link.text, nil, link
 end
 
 local function has_class(attr, cls)
@@ -198,9 +213,9 @@ return {
   -- Figure pass first, so a paragraph-sole link becomes a figure before the
   -- badge pass would turn it into a badge.
   { Para = function(el)
-      local url, attr = sole_link(el.content)
+      local url, attr, link = sole_link(el.content)
       if url and is_ng(url) and not has_class(attr, "ng-badge-only") then
-        local fig = figure(url)
+        local fig = figure(url, link_caption(link))
         if fig then return fig end
       end
       return nil
@@ -211,8 +226,8 @@ return {
     Link = function(el)
       if not is_ng(el.target) then return nil end
       if has_class(el.attr, "ng-figure") then
-        local fig = figure(el.target)
-        if fig then return pandoc.utils.blocks_to_inlines({ fig }) end
+        local fig = figure(el.target, link_caption(el))
+        if fig then return fig.content end
       end
       return badge(el.target)
     end,

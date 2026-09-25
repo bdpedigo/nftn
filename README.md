@@ -35,8 +35,10 @@ build turns every such link into a consistent badge, and some links into figures
 The rule:
 
 - A Neuroglancer link **alone in its own paragraph** becomes a **figure**: an image
-  rendered by [ngsnap](https://github.com/bdpedigo/ngsnap) with a badge caption that
-  links to the live state.
+  rendered by [ngsnap](https://github.com/bdpedigo/ngsnap) with an "Open in
+  Neuroglancer" badge that links to the live state.
+- The **link text is the figure caption**: `[The PNN in blue, from @auer2025role.](https://…)`.
+  Emphasis and citations work. A bare URL gives a figure with no caption.
 - A Neuroglancer link **inside a sentence** stays a **badge** only.
 - To override, add a class to a markdown link:
   - `[text](https://…){.ng-figure}` forces a figure. This works even for an inline link.
@@ -64,8 +66,9 @@ quarto render
 Rendered images are written to `figures/` (gitignored) and are named by a content
 key, so an unchanged link is not re-rendered.
 
-Without the browser, the build still works: it substitutes a placeholder image for
-each figure and prints a warning. To force placeholders (fast builds, no browser):
+Without the browser, the build still works: each figure link that cannot be
+rendered stays a badge and a warning is printed. To skip rendering (fast builds,
+no browser):
 
 ```bash
 NFTN_NO_RENDER=1 quarto render

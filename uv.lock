@@ -7,7 +7,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-09-09T19:24:05.149897Z"
+exclude-newer = "2026-09-11T00:11:18.337259Z"
 exclude-newer-span = "P14D"
 
 [[package]]
@@ -378,7 +378,7 @@ requires-dist = [
 [[package]]
 name = "ngsnap"
 version = "0.1.0"
-source = { git = "https://github.com/bdpedigo/ngsnap.git#f4a6a7c7260ed0cec34337a2f95b8587393dd599" }
+source = { git = "https://github.com/bdpedigo/ngsnap.git#bd54295a7f6e20372bca5818f22c2d923dfa34ee" }
 dependencies = [
     { name = "neuroglancer" },
     { name = "tomli-w" },

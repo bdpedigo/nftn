@@ -13,7 +13,7 @@ subtitle: "Static markup for elements that later tasks will emit. Use this page 
       <span>A microglial process (blue) wrapped around a dendritic spine. Three slices through the tissue and one 3D view of the same cell, rendered from the link they sent.</span>
       <a class="ng-badge" href="#neuroglancer">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13"/><path d="M8 1.5v13M1.5 8h13"/><rect x="1.5" y="8" width="6.5" height="6.5" fill="currentColor" stroke="none"/></svg>
-        Open the link they sent
+        Open in Neuroglancer
       </a>
     </figcaption>
   </figure>

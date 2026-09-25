@@ -16,6 +16,25 @@ showDefaultAnnotations = false
 crossSectionBackgroundColor = "#000000"
 projectionBackgroundColor = "#000000"
 
+# Hidden panels still reserve width in the viewer, leaving a black bar.
+[template.selectedLayer]
+visible = false
+
+[template.settingsPanel]
+visible = false
+
+[template.selection]
+visible = false
+
+[template.layerListPanel]
+visible = false
+
+[template.statistics]
+visible = false
+
+[template.helpPanel]
+visible = false
+
 [config]
 showUIControls = false
 showPanelBorders = false

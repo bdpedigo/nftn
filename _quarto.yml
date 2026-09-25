@@ -12,6 +12,7 @@ project:
     - index.qmd
     - fixtures.qmd
     - submit.qmd
+    - about.qmd
     - posts/
 
 # Neuroglancer deployments whose links render as a badge (see ngbadge.lua).
@@ -49,7 +50,7 @@ website:
         text: Finds
       - href: "#glossary"
         text: Glossary
-      - href: "#about"
+      - href: about.qmd
         text: About
     right:
       - href: submit.qmd

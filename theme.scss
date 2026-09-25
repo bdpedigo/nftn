@@ -320,14 +320,22 @@ body:has(.ask) main.content {
 }
 .post-head .title.answer::before { content: "The answer: "; color: var(--ink); }
 
-// Prose (post body inside the sheet)
+// Prose (post body inside the sheet, and plain pages like About).
+// Pandoc wraps each heading and its content in <section>, so match both levels.
+main.content > :is(p, ul, ol, blockquote),
+main.content section > :is(p, ul, ol, blockquote) { max-width: 68ch; }
 main.content > p,
-main.content > ul,
-main.content > ol,
-main.content > blockquote { max-width: 68ch; }
-main.content > p { font-size: 18px; line-height: 1.65; margin-bottom: 1.2em; }
-main.content > h2 { font: 700 28px/1.15 var(--display); margin: 44px 0 14px; }
-main.content > h3 { font: 700 21px/1.2 var(--display); margin: 32px 0 10px; }
+main.content section > p { font-size: 18px; line-height: 1.65; margin-bottom: 1.2em; }
+main.content > h2,
+main.content section > h2 { font: 700 28px/1.15 var(--display); margin: 44px 0 14px; padding: 0; border: 0; }
+main.content > h3,
+main.content section > h3 { font: 700 21px/1.2 var(--display); margin: 32px 0 10px; }
+
+// Plain pages have no sheet; align prose with the title block's gutter.
+body:not(:has(.ask)) main.content > :is(p, ul, ol, blockquote, section) {
+  margin-left: var(--gutter);
+  margin-right: var(--gutter);
+}
 dfn { font-style: normal; border-bottom: 1px dotted #555; }
 
 // Inline citation (TASK-5 emits <a class="cite">[1]</a>)
@@ -363,6 +371,8 @@ dfn { font-style: normal; border-bottom: 1px dotted #555; }
   font: 700 14px/1 var(--display); padding: 9px 13px;
 }
 .ng-badge svg { width: 14px; height: 14px; }
+// Uncaptioned figure: keep the badge on the right, where it sits beside a caption.
+.sheet figcaption .ng-badge:only-child { margin-left: auto; }
 // Keep the label white on hover/focus (Bootstrap's a:hover would turn it blue).
 .ng-badge:hover, .ng-badge:focus { background: var(--accent-deep); color: #fff; }
 
@@ -473,7 +483,7 @@ main.content figure.figure img, main.content .figure-img { width: 100%; backgrou
   display: block;
 }
 main.content > p:has(a[target="_blank"]),
-.form-embed + p { padding: 0 var(--gutter); font-size: 16px; }
+.form-embed + p { font-size: 16px; }
 
 // ---------------------------------------------------------------------------
 // Footer  (Quarto page-footer)

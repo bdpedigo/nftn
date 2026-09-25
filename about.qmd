@@ -1,0 +1,20 @@
+---
+title: "About"
+subtitle: "Who we are, and why we answer strange questions about the brain."
+---
+
+We are scientists on the Connectomics team at the Allen Institute. We spend our days inside enormous maps of brain tissue: electron microscopy images of every cell in a small piece of brain, traced out neuron by neuron so that you can follow each wire and see where it connects.
+
+More and more people are exploring these maps too. Students, scientists in other fields, and curious members of the public open the data in Neuroglancer, a viewer that runs in the browser, and start wandering. Sooner or later they run into something odd. A cell with a shape nobody warned them about. A tangle that doesn't look like any textbook drawing. A blob that might be biology, or might be a glitch.
+
+This site is where those finds come to get answered. You send us a link to the thing you found and your question. One of us writes back with a short post about what it is, why it looks that way, and why it might matter.
+
+## We don't always know
+
+Here is the honest part. Often, the thing you found is something we don't understand yet either. Sometimes it is something none of us has ever seen before. These datasets are new, and they are big enough that nobody has looked at all of them.
+
+When that happens, we say so. We'll tell you what we know, what we suspect, and where the guessing starts, and we'll label the guesses as guesses. Some of the best questions we get are the ones we can't fully answer.
+
+## Go look for yourself
+
+Every post shows the find as a figure and links straight back to the live data, so you can open the same view in Neuroglancer and explore it on your own. If you spot something strange along the way, [send it to us](submit.qmd).

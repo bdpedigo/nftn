@@ -13,8 +13,9 @@ Figure vs badge rule (kept in sync with ngbadge.lua):
 Caching: the filename is ngsnap's cache_key(url, spec), so an unchanged link and
 style are not re-rendered. Cross-CI-run caching and the failure policy are TASK-8.
 
-Local builds without a working browser get a placeholder image and a warning
-instead of a hard failure (see README for enabling real local renders).
+A link whose render fails (or that cannot be rendered, e.g. no browser) gets no
+image and no manifest entry, so it stays a badge; a warning is logged instead of
+failing the build (see README for enabling real local renders).
 """
 
 from __future__ import annotations
@@ -63,7 +64,8 @@ def url_host(url: str) -> str | None:
 
 
 # One Neuroglancer link: a markdown link [text](url){attrs} or a bare URL{attrs}.
-MD_LINK = re.compile(r"\[[^\]]*\]\((?P<url>\S+?)\)(?:\{(?P<attrs>[^}]*)\})?")
+# Link text may hold one level of brackets, e.g. a [@citation] in a caption.
+MD_LINK = re.compile(r"\[(?:[^\[\]]|\[[^\]]*\])*\]\((?P<url>\S+?)\)(?:\{(?P<attrs>[^}]*)\})?")
 BARE_URL = re.compile(r"(?P<url>https?://\S+?)(?:\{(?P<attrs>[^}]*)\})?$")
 
 
@@ -103,19 +105,6 @@ def figure_urls(text: str, hosts: set[str]) -> set[str]:
     return found
 
 
-def make_placeholder(out_path: Path, reason: str) -> None:
-    """Write a neutral placeholder PNG so a local build without a browser works."""
-    from PIL import Image, ImageDraw
-
-    w, h = 800, 600
-    img = Image.new("RGB", (w, h), "#e4e7f7")
-    draw = ImageDraw.Draw(img)
-    draw.rectangle([1, 1, w - 2, h - 2], outline="#5c6bc0", width=3)
-    draw.text((24, 24), "Neuroglancer figure placeholder", fill="#1a1a1a")
-    draw.text((24, 48), reason, fill="#4a4f6e")
-    img.save(out_path, "PNG")
-
-
 def main() -> int:
     hosts = load_hosts()
     if not hosts:
@@ -129,12 +118,12 @@ def main() -> int:
     FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
     # Load the house style. If ngsnap or the style file is unavailable, every
-    # figure falls back to a placeholder rather than failing the build.
-    # Set NFTN_NO_RENDER=1 to force placeholders (fast local builds, no browser).
+    # figure link stays a badge rather than failing the build.
+    # Set NFTN_NO_RENDER=1 to skip rendering (fast local builds, no browser).
     spec = None
     cache_key = None
     if os.getenv("NFTN_NO_RENDER"):
-        log("NFTN_NO_RENDER set; using placeholders")
+        log("NFTN_NO_RENDER set; figure links stay badges")
     else:
         try:
             from ngsnap import Spec, cache_key as _cache_key
@@ -142,21 +131,21 @@ def main() -> int:
             spec = Spec.from_file(STYLE_FILE)
             cache_key = _cache_key
         except Exception as exc:  # noqa: BLE001
-            log(f"ngsnap unavailable ({exc}); using placeholders")
+            log(f"ngsnap unavailable ({exc}); figure links stay badges")
 
     # Precompute keys and paths.
     entries: dict[str, dict[str, object]] = {}
-    for url in sorted(urls):
-        key = cache_key(url, spec) if cache_key else re.sub(r"[^A-Za-z0-9]", "", url)[-40:]
-        safe_key = re.sub(r"[^A-Za-z0-9._-]", "_", str(key))
-        entries[url] = {"key": safe_key, "path": f"figures/{safe_key}.png"}
+    if cache_key is not None:
+        for url in sorted(urls):
+            safe_key = re.sub(r"[^A-Za-z0-9._-]", "_", str(cache_key(url, spec)))
+            entries[url] = {"key": safe_key, "path": f"figures/{safe_key}.png"}
 
     # Which images still need rendering (skip-if-exists = local cache).
     to_render = {
         url: e for url, e in entries.items() if not (ROOT / str(e["path"])).exists()
     }
     log(f"{len(urls)} figure link(s); {len(to_render)} to render, "
-        f"{len(urls) - len(to_render)} cached")
+        f"{len(entries) - len(to_render)} cached")
 
     session = None
     if to_render and spec is not None:
@@ -166,31 +155,27 @@ def main() -> int:
             session = RenderSession(timeout=90)
             session.__enter__()
         except Exception as exc:  # noqa: BLE001
-            log(f"could not start a browser ({exc}); using placeholders")
+            log(f"could not start a browser ({exc}); figure links stay badges")
             session = None
 
-    for url, e in to_render.items():
-        out = ROOT / str(e["path"])
-        if session is not None:
-            try:
-                session.render(url, out, spec=spec)
-                e["ok"] = True
-                log(f"rendered {e['key']}.png")
-                continue
-            except Exception as exc:  # noqa: BLE001
-                log(f"render failed for {url[:60]}... ({exc}); using placeholder")
-        make_placeholder(out, "Run 'uv sync' and a browser to render this locally.")
-        e["ok"] = False
-
     if session is not None:
+        for url, e in to_render.items():
+            try:
+                session.render(url, ROOT / str(e["path"]), spec=spec)
+                log(f"rendered {e['key']}.png")
+            except Exception as exc:  # noqa: BLE001
+                log(f"render failed for {url[:60]}... ({exc}); leaving it as a badge")
         session.__exit__(None, None, None)
 
-    # Entries already on disk from a previous build are considered ok.
-    for url, e in entries.items():
-        e.setdefault("ok", (ROOT / str(e["path"])).exists())
-
-    MANIFEST.write_text(json.dumps(entries, indent=2, sort_keys=True))
-    log(f"wrote {MANIFEST.relative_to(ROOT)}")
+    rendered = {url: e for url, e in entries.items() if (ROOT / str(e["path"])).exists()}
+    text = json.dumps(rendered, indent=2, sort_keys=True)
+    # NOTE: skip unchanged writes; quarto preview treats a touched manifest as a
+    # change and re-renders, which reloads the browser back onto the open page.
+    if MANIFEST.exists() and MANIFEST.read_text() == text:
+        log(f"{MANIFEST.relative_to(ROOT)} unchanged")
+    else:
+        MANIFEST.write_text(text)
+        log(f"wrote {MANIFEST.relative_to(ROOT)}")
     return 0
 
 
