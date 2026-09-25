@@ -3,9 +3,11 @@ $-- Posts set a "question" in front matter and get the question-first header.
 $-- Pages with no question (home, About, fixtures) get the plain hero header.
 $if(question)$
 <header id="title-block-header" class="quarto-title-block post-head question-first">
+  <h1 class="title answer">$title$</h1>
   <p class="meta">
     $for(categories)$<span class="tag" data-tag="$categories$"><span class="sw"></span>$categories$</span>$endfor$
     $if(date)$<time>$date$</time>$endif$
+    $if(by-author)$<span class="by">Answered by $for(by-author)$$by-author.name.literal$$sep$, $endfor$</span>$endif$
   </p>
   <section class="ask">
     <div class="ask-who">
@@ -14,7 +16,6 @@ $if(question)$
     </div>
     <blockquote class="ask-text">$question$</blockquote>
   </section>
-  <h1 class="title answer">$title$</h1>
 </header>
 $else$
 <header id="title-block-header" class="quarto-title-block default">

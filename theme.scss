@@ -320,7 +320,7 @@ body:has(.ask) main.content {
 .post-head .title.answer {
   font: 800 clamp(30px, 3.8vw, 44px)/1.0 var(--display);
   color: var(--ink-soft);
-  margin: 0;
+  margin: 0 0 22px;
 }
 // .post-head .title.answer::before { content: "Question "; color: var(--ink); }
 
@@ -362,7 +362,7 @@ dfn { font-style: normal; border-bottom: 1px dotted #555; }
 // ---------------------------------------------------------------------------
 // Generated ngsnap figure + Neuroglancer badge  (TASK-6 / TASK-7)
 // ---------------------------------------------------------------------------
-.sheet { background: var(--paper); padding: 10px 10px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 14px 30px rgba(0,0,0,0.14); }
+.sheet { background: var(--paper); padding: 10px 10px 0; margin: 24px 0 48px; box-shadow: 0 2px 4px rgba(0,0,0,0.16), 0 14px 30px rgba(0,0,0,0.14); }
 .sheet figure { margin: 0; }
 .sheet figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #000; display: block; }
 .sheet figcaption {
@@ -426,6 +426,17 @@ dfn { font-style: normal; border-bottom: 1px dotted #555; }
 .refs h2 { font: 700 20px/1.2 var(--display); margin-bottom: 12px; }
 .refs ol { padding-left: 1.4em; font-size: 15px; line-height: 1.55; color: #555; }
 .refs li { margin-bottom: 10px; }
+
+// Quarto's own bibliography markup, styled to match .refs instead of its tinted box.
+#quarto-appendix.default {
+  background: transparent; border-top: 1px solid var(--ink);
+  margin-top: 44px; padding-top: 22px;
+}
+#quarto-appendix.default .quarto-appendix-heading {
+  font: 700 20px/1.2 var(--display) !important; opacity: 1; margin-bottom: 12px;
+}
+#quarto-appendix.default section { padding-bottom: 0; }
+#quarto-appendix.default .csl-entry { font-size: 15px; line-height: 1.55; color: #555; margin-bottom: 10px; }
 
 // ---------------------------------------------------------------------------
 // Code blocks and tables

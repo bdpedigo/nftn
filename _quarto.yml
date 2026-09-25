@@ -35,7 +35,7 @@ website:
   # Absolute base for the site, so Open Graph and Twitter cards emit absolute
   # image and page URLs (social scrapers reject relative paths).
   site-url: "https://bdpedigo.github.io/nftn/"
-  description: "Readers send us weird finds from Neuroglancer. Scientists who work in that data write back and explain what they are."
+  description: "Send us your weird finds from Neuroglancer. Scientists who work in the data write back and (try to) explain."
   # Card metadata for links shared on social platforms and chat apps.
   # Each page uses its own title, description, and image; pages with no image
   # fall back to this site-level default image.
@@ -58,8 +58,8 @@ website:
         text: "Send us a question"
   page-footer:
     center: |
-      Notes from the Neuropil is an independent site kept by scientists who spend
-      their days inside these datasets. Found something strange in Neuroglancer?
+      Notes from the Neuropil is a blog written by scientists who spend
+      their days exploring these datasets. Found something strange in Neuroglancer?
       Send us the link and your question.
 
 format:
