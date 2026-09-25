@@ -1,8 +1,11 @@
 project:
   type: website
   output-dir: _site
-  # Render Neuroglancer figures with ngsnap before Quarto builds the pages.
-  pre-render: uv run python scripts/render_figures.py
+  # Render Neuroglancer figures with ngsnap before Quarto builds the pages,
+  # then build the site card from the most recent post's front image.
+  pre-render:
+    - uv run python scripts/render_figures.py
+    - uv run python scripts/latest_social_card.py
   # figures/ is gitignored and produced at build time; force Quarto to copy it.
   # assets/ holds the default social card and other static files.
   resources:
@@ -28,7 +31,7 @@ neuroglancer:
 # `website` block to filters) and sets it as the page image only when the page
 # has no frontmatter image and no image anywhere in its body. It must be an
 # absolute URL, because a page that hits this fallback can be at any depth.
-social-card: "https://bdpedigo.github.io/nftn/assets/social-card.png"
+social-card: "https://bdpedigo.github.io/nftn/figures/social-card.png"
 
 website:
   title: "Notes from the Neuropil"
@@ -39,7 +42,7 @@ website:
   # Card metadata for links shared on social platforms and chat apps.
   # Each page uses its own title, description, and image; pages with no image
   # fall back to this site-level default image.
-  image: assets/social-card.png
+  image: figures/social-card.png
   open-graph: true
   twitter-card: true
   search: false

@@ -1,8 +1,8 @@
-"""Generate the site-level default social card image.
+"""Generate the fallback site-level social card image.
 
-Pages with no `image` frontmatter fall back to this one card for Open Graph and
-Twitter card previews. Run it once and commit the output; it is not part of the
-Quarto build.
+The site card normally comes from the most recent post's front image
+(scripts/latest_social_card.py); this card is used only when no post has one.
+Run it once and commit the output; it is not part of the Quarto build.
 
     uv run python scripts/make_social_card.py
 

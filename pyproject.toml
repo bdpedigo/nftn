@@ -8,6 +8,7 @@ dependencies = [
     # The 'render' extra pulls Selenium for real headless-browser renders.
     # uv.lock pins the exact commit for reproducible builds.
     "ngsnap[render] @ git+https://github.com/bdpedigo/ngsnap.git",
+    "pillow>=12.3.0",
     "pyyaml>=6.0",
 ]
 
